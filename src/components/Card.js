@@ -9,6 +9,7 @@ import {
   StyleSheet,
   AlertIOS
 } from "react-native";
+import firebase from "firebase";
 import xml2js from "react-native-xml2js";
 
 export default class Card extends Component {
@@ -31,7 +32,6 @@ export default class Card extends Component {
         this.setState({
           game: result.boardgames.boardgame[0]
         });
-        console.log(result.boardgames.boardgame[0]);
       });
     });
 
@@ -39,9 +39,24 @@ export default class Card extends Component {
   }
 
   handleSave = () => {
-    AlertIOS.prompt("Enter a price for the boardgame", null, price => {
+    AlertIOS.prompt("Enter purchased price", null, price => {
       // save to firebase
-      console.log({ price });
+      console.log({
+        image: this.state.game.image[0],
+        name: this.state.game.name[0]._,
+        price: price,
+        111: this.state.game.$.objectid
+      });
+      firebase
+        .database()
+        .ref("users/123/savedGames/" + this.state.game.$.objectid)
+        .set({
+          image: this.state.game.image[0],
+          name: this.state.game.name[0]._,
+          price: price
+        })
+        .then(console.log)
+        .catch(console.log``);
     });
   };
 

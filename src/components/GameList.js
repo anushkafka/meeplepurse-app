@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { Text, View, ListView, FlatList } from "react-native";
+import {
+  Text,
+  View,
+  ListView,
+  FlatList,
+  TextInput,
+  TouchableOpacity
+} from "react-native";
 import xml2js from "react-native-xml2js";
 import ListItem from "./ListItem";
 
@@ -8,22 +15,25 @@ export default class GameList extends Component {
     super(props);
     this.state = {
       listOfGames: [],
-      selectedGameId: null
+      selectedGameId: null,
+      searchItem: ""
     };
   }
 
   componentWillMount = () => {
-    // fetch data from API
-    var parser = new xml2js.Parser();
-    fetch("https://www.boardgamegeek.com/xmlapi/search?search=sushi+go").then(
-      response => {
-        parser.parseString(response._bodyText, (err, result) => {
-          this.setState({
-            listOfGames: result.boardgames.boardgame
-          });
-        });
-      }
-    );
+    // // fetch data from API
+    // var parser = new xml2js.Parser();
+    // fetch(
+    //   `https://www.boardgamegeek.com/xmlapi/search?search=${encodeURIComponent(
+    //     this.state.searchItem
+    //   )}`
+    // ).then(response => {
+    //   parser.parseString(response._bodyText, (err, result) => {
+    //     this.setState({
+    //       listOfGames: result.boardgames.boardgame
+    //     });
+    //   });
+    // });
 
     // feed result to listview DS
     const ds = new ListView.DataSource({
@@ -33,16 +43,6 @@ export default class GameList extends Component {
     this.dataSource = ds.cloneWithRows(this.state.listOfGames);
   };
 
-  // renderGames = () => {
-  //   if (this.state.listOfGames.length === 0) {
-  //     return <Text>Loading...</Text>;
-  //   } else {
-  //     return this.state.listOfGames.map((gameObject, index) => (
-  //       <Text key={index}>{gameObject.name[0]._}</Text>
-  //     ));
-  //   }
-  // };
-
   handleListItemPress = game => {
     this.setState({
       selectedGameId: game.item.$.objectid
@@ -50,7 +50,6 @@ export default class GameList extends Component {
   };
 
   renderRow = game => {
-    console.log(game.item.$.objectid === this.state.selectedGameId);
     return (
       <ListItem
         selected={game.item.$.objectid === this.state.selectedGameId}
@@ -60,14 +59,57 @@ export default class GameList extends Component {
     );
   };
 
+  onSearchPress = () => {
+    // fetch data from API
+    var parser = new xml2js.Parser();
+    fetch(
+      `https://www.boardgamegeek.com/xmlapi/search?search=${encodeURIComponent(
+        this.state.searchItem
+      )}`
+    ).then(response => {
+      parser.parseString(response._bodyText, (err, result) => {
+        this.setState({
+          listOfGames: result.boardgames.boardgame
+        });
+      });
+    });
+  };
+
   render() {
-    // return <View>{this.renderGames()}</View>;
     return (
-      <FlatList
-        extraData={this.state.selectedGameId}
-        data={this.state.listOfGames}
-        renderItem={this.renderRow}
-      />
+      <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, flexDirection: "row", maxHeight: 50 }}>
+          <TextInput
+            style={{
+              backgroundColor: "lightgrey",
+              flex: 2,
+              padding: 5
+            }}
+            placeholder="Search game..."
+            onChangeText={text => this.setState({ searchItem: text })}
+            value={this.state.searchItem}
+          />
+          <TouchableOpacity
+            style={{
+              backgroundColor: "lightgrey",
+              padding: 5,
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+            onPress={this.onSearchPress}
+          >
+            <Text>Search</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={{ flexGrow: 1 }}>
+          <FlatList
+            extraData={this.state.selectedGameId}
+            data={this.state.listOfGames}
+            renderItem={this.renderRow}
+          />
+        </View>
+      </View>
     );
   }
 }
