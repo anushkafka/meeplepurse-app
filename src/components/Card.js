@@ -56,7 +56,7 @@ export default class Card extends Component {
           price: price
         })
         .then(console.log)
-        .catch(console.log``);
+        .catch(console.log);
     });
   };
 

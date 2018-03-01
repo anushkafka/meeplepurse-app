@@ -77,8 +77,15 @@ export default class GameList extends Component {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <View style={{ flex: 1, flexDirection: "row", maxHeight: 50 }}>
+      <View>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            maxHeight: 50,
+            minHeight: 50
+          }}
+        >
           <TextInput
             style={{
               backgroundColor: "lightgrey",
@@ -102,7 +109,7 @@ export default class GameList extends Component {
             <Text>Search</Text>
           </TouchableOpacity>
         </View>
-        <View style={{ flexGrow: 1 }}>
+        <View style={{ flexGrow: 1, marginBottom: 50 }}>
           <FlatList
             extraData={this.state.selectedGameId}
             data={this.state.listOfGames}

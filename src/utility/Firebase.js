@@ -10,3 +10,5 @@ const Firebase = () => {
     storageBucket: "projName-d0c3e.appspot.com"
   });
 };
+
+export default Firebase;

@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Platform, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import firebase from "firebase";
 import Header from "./src/components/Header";
-import GameList from "./src/components/GameList";
+
+import Router from "./src/utility/Router";
 
 import {} from "./src/reducers";
 
@@ -19,10 +20,11 @@ export default class App extends Component {
   }
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <Header headerText="Add Game" />
-        <GameList />
-      </View>
+      // <View style={{ flex: 1 }}>
+      //   <Header headerText="Add Game" />
+      //   <GameList />
+      // </View>
+      <Router />
     );
   }
 }
