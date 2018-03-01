@@ -9,7 +9,7 @@ import {} from "./src/reducers";
 export default class App extends Component {
   render() {
     return (
-      <View style={styles.container}>
+      <View style={{ flex: 1 }}>
         <Header headerText="Search" />
         <GameList />
       </View>

@@ -1,21 +1,40 @@
 import React, { Component } from "react";
-import { Text } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 import CardSection from "./CardSection";
+import Card from "./Card";
 
 export default class ListItem extends Component {
+  handlePress = () => {
+    this.props.onPress(this.props.game);
+  };
+
   render() {
+    const { cardSectionContainer, textStyle } = styles;
+
+    console.log(111, this.props.selected);
+
     return (
-      <CardSection>
-        <Text>{this.props.children.item.name[0]._}</Text>
-        <Text>{this.props.children.item.yearpublished}</Text>
-      </CardSection>
+      <TouchableOpacity onPress={this.handlePress}>
+        {this.props.selected ? (
+          <Card game={this.props.game} />
+        ) : (
+          <CardSection style={cardSectionContainer}>
+            <Text style={textStyle}>{this.props.game.item.name[0]._}</Text>
+            {/* <Text style={textStyle}>{this.props.game.item.yearpublished}</Text> */}
+          </CardSection>
+        )}
+      </TouchableOpacity>
     );
   }
 }
 
-const style = {
+const styles = {
   cardSectionContainer: {
     flex: 1,
     flexDirection: "row"
+  },
+  textStyle: {
+    fontSize: 18,
+    paddingLeft: 15
   }
 };

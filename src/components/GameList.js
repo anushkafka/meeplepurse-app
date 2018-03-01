@@ -7,7 +7,8 @@ export default class GameList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      listOfGames: []
+      listOfGames: [],
+      selectedGameId: null
     };
   }
 
@@ -42,14 +43,31 @@ export default class GameList extends Component {
   //   }
   // };
 
+  handleListItemPress = game => {
+    this.setState({
+      selectedGameId: game.item.$.objectid
+    });
+  };
+
   renderRow = game => {
-    return <ListItem>{game}</ListItem>;
+    console.log(game.item.$.objectid === this.state.selectedGameId);
+    return (
+      <ListItem
+        selected={game.item.$.objectid === this.state.selectedGameId}
+        onPress={this.handleListItemPress}
+        game={game}
+      />
+    );
   };
 
   render() {
     // return <View>{this.renderGames()}</View>;
     return (
-      <FlatList data={this.state.listOfGames} renderItem={this.renderRow} />
+      <FlatList
+        extraData={this.state.selectedGameId}
+        data={this.state.listOfGames}
+        renderItem={this.renderRow}
+      />
     );
   }
 }
