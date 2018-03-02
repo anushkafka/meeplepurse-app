@@ -11,8 +11,6 @@ export default class ListItem extends Component {
   render() {
     const { cardSectionContainer, textStyle } = styles;
 
-    console.log(111, this.props.selected);
-
     return (
       <TouchableOpacity onPress={this.handlePress}>
         {this.props.selected ? (
